@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/banana?allowPublicKeyRetrieval=true&requireSSL=false&useSSL=false
+    username: root
+    password: U*p-ass-75-79*-!
+  jpa:
+    hibernate.ddl-auto: create
+    generate-ddl: true
+    show-sql: true
