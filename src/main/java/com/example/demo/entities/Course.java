@@ -34,4 +34,8 @@ public class Course {
     @ManyToMany(mappedBy = "assignedCourses")
     @JsonIgnore
     private List<Teacher> teachers;
+
+    @OneToMany(mappedBy = "course")
+    private List<Assignment> assignments;
+
 }
