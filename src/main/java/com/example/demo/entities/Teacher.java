@@ -1,18 +1,19 @@
 package com.example.demo.entities;
+
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "student")
+@Table(name = "teacher")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Student {
+public class Teacher {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Setter(AccessLevel.NONE)
@@ -40,8 +41,9 @@ public class Student {
 
     @ManyToMany
     @JoinTable(
-            name = "course_registered",
-            joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"),
+            name = "course_assigned",
+            joinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
-    private List<Course> registeredCourses;
+    private List<Course> assignedCourses;
+
 }

@@ -19,7 +19,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Setter(AccessLevel.NONE)
     @Id
-    private Long id;
+    private long id;
 
     @NonNull
     private String name;
@@ -30,4 +30,8 @@ public class Course {
     @ManyToMany(mappedBy = "registeredCourses")
     @JsonIgnore
     private List<Student> students;
+
+    @ManyToMany(mappedBy = "assignedCourses")
+    @JsonIgnore
+    private List<Teacher> teachers;
 }
