@@ -1,8 +1,9 @@
 package com.example.demo.entities;
+
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "teacher")
@@ -12,13 +13,37 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Teacher extends User {
+public class Teacher {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Setter(AccessLevel.NONE)
     @Id
-    private Long id;
+    private long id;
 
-    @OneToMany(mappedBy = "teacher")
-    private Set<CourseRegistrationTeacher> courseRegistrations;
+    @NonNull
+    private String name;
+
+    @NonNull
+    private String surname;
+
+    @NonNull
+    private String birthday;
+
+    @NonNull
+    @Column(unique = true)
+    private String email;
+
+    @NonNull
+    private String picture;
+
+    @NonNull
+    private String city;
+
+    @ManyToMany
+    @JoinTable(
+            name = "course_assigned",
+            joinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
+    private List<Course> assignedCourses;
+
 }
