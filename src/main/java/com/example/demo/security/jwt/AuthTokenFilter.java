@@ -1,6 +1,8 @@
-package com.example.demo.security.teacher.jwt;
+package com.example.demo.security.jwt;
 
+import com.example.demo.entities.Student;
 import com.example.demo.entities.Teacher;
+import com.example.demo.services.StudentService;
 import com.example.demo.services.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
+    private StudentService studentService;
+
+    @Autowired
     private TeacherService teacherService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
@@ -36,12 +41,27 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validateJwtToken(jwt)){
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-                Optional<Teacher> userDetails = teacherService.getTeacher(username);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails,null,userDetails.get().getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                if (studentService.getStudent(username) != null){
+                    Optional<Student> userDetails = studentService.getStudent(username);
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails,null,userDetails.get().getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else{
+                    Optional<Teacher> userDetails = teacherService.getTeacher(username);
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails,null,userDetails.get().getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+
+//                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+//                        userDetails,null,userDetails.get().getAuthorities());
+//                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e){
             logger.error("Cannot set user authentication: {}", e);

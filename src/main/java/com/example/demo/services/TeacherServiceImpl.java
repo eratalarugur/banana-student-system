@@ -4,7 +4,7 @@ import com.example.demo.entities.Teacher;
 import com.example.demo.repositories.TeacherRepository;
 import com.example.demo.requests.LoginRequest;
 import com.example.demo.responses.JwtResponse;
-import com.example.demo.security.teacher.jwt.JwtUtils;
+import com.example.demo.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,7 +52,7 @@ public class TeacherServiceImpl implements TeacherService, UserDetailsService {
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication, true);
 
         Teacher userDetails = (Teacher) authentication.getPrincipal();
 

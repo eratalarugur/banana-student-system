@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.requests.LoginRequest;
-import com.example.demo.security.teacher.jwt.JwtUtils;
+import com.example.demo.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

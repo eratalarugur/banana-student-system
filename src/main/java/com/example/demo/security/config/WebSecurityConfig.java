@@ -1,7 +1,7 @@
 package com.example.demo.security.config;
 
-import com.example.demo.security.student.jwt.AuthEntryPointJwt;
-import com.example.demo.security.student.jwt.AuthTokenFilter;
+import com.example.demo.security.jwt.AuthEntryPointJwt;
+import com.example.demo.security.jwt.AuthTokenFilter;
 import com.example.demo.services.StudentServiceImpl;
 import com.example.demo.services.TeacherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +34,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+        http
+                .cors().and().csrf().disable().exceptionHandling()
+                .authenticationEntryPoint(unauthorizedHandler)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().authorizeRequests()
                 .antMatchers("/signin/**").permitAll()
                 //.antMatchers("/courses/**").hasAnyAuthority("")
-                .antMatchers("/courses/**").permitAll().anyRequest().authenticated();
+                .antMatchers("/course/**").permitAll().anyRequest().authenticated()
+                .and()
+                .formLogin();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }

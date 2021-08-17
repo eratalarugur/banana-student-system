@@ -1,12 +1,13 @@
-package com.example.demo.security.teacher.jwt;
+package com.example.demo.security.jwt;
 
+import com.example.demo.entities.Student;
 import com.example.demo.entities.Teacher;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.*;
+
 import java.util.Date;
 
 @Component
@@ -15,13 +16,22 @@ public class JwtUtils {
     private String jwtSecret = "SecretKey";
     private int jwtExpirationsMs = 86400000;
 
-    public String generateJwtToken(Authentication authentication){
-        Teacher userPrincipal = (Teacher) authentication.getPrincipal();
-        logger.info(jwtSecret);
-        logger.info(String.valueOf(jwtExpirationsMs));
-        return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationsMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+    public String generateJwtToken(Authentication authentication, boolean isTeacher){
+        if (isTeacher){
+            Teacher userPrincipal = (Teacher) authentication.getPrincipal();
+            logger.info(jwtSecret);
+            logger.info(String.valueOf(jwtExpirationsMs));
+            return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
+                    .setExpiration(new Date((new Date()).getTime() + jwtExpirationsMs))
+                    .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+        } else {
+            Student userPrincipal = (Student) authentication.getPrincipal();
+            logger.info(jwtSecret);
+            logger.info(String.valueOf(jwtExpirationsMs));
+            return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
+                    .setExpiration(new Date((new Date()).getTime() + jwtExpirationsMs))
+                    .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+        }
     }
 
     public String getUserNameFromJwtToken(String token){

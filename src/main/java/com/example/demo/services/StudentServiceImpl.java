@@ -4,7 +4,6 @@ import com.example.demo.entities.Student;
 import com.example.demo.repositories.StudentRepository;
 import com.example.demo.requests.LoginRequest;
 import com.example.demo.responses.JwtResponse;
-import com.example.demo.security.teacher.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.example.demo.security.jwt.JwtUtils;
 
 import java.util.Optional;
 
@@ -53,7 +53,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication, false);
 
         Student userDetails = (Student) authentication.getPrincipal();
 
