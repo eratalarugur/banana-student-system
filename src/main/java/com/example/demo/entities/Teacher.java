@@ -56,7 +56,7 @@ public class Teacher implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("");
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("TEACHER");
         return Collections.singletonList(authority);
     }
 

@@ -53,7 +53,7 @@ public class TeacherServiceImpl implements TeacherService, UserDetailsService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication, true);
-
+        System.out.println("======>>>>> Token is here : " + jwt);
         Teacher userDetails = (Teacher) authentication.getPrincipal();
 
         return ResponseEntity.ok(
