@@ -11,9 +11,12 @@ public class LoginRequest {
     @NonNull
     private String password;
 
-    public LoginRequest(@NonNull String email, @NonNull String password) {
+    private boolean isTeacher;
+
+    public LoginRequest(@NonNull String email, @NonNull String password, boolean isTeacher) {
         this.email = email;
         this.password = password;
+        this.isTeacher = isTeacher;
     }
 
     public LoginRequest() {
