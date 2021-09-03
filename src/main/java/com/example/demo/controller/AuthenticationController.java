@@ -43,8 +43,5 @@ public class AuthenticationController {
         } else {
             return studentService.getStudent((userDetailRequest.getEmail()));
         }
-
-
     }
-
 }
