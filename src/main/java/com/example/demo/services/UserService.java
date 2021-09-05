@@ -27,10 +27,13 @@ public class UserService {
     JwtUtils jwtUtils;
 
     public ResponseEntity<?> authenticateUser(LoginRequest loginRequest){
-        if (studentService.authenticateStudent(loginRequest) != null){
-            return studentService.authenticateStudent(loginRequest);
-        }else {
+        System.out.println("====>>>> authenticateUser Email : " + loginRequest.getEmail());
+        System.out.println("====>>>> authenticateUser Password : " + loginRequest.getPassword());
+        System.out.println("====>>>> authenticateUser isTeacher : " + loginRequest.getIsTeacher());
+        if (loginRequest.getIsTeacher() == 1){
             return teacherService.authenticateTeacher(loginRequest);
+        }else {
+            return studentService.authenticateStudent(loginRequest);
         }
     }
 

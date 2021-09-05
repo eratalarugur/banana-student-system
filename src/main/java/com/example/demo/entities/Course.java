@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,12 +28,17 @@ public class Course {
     @NonNull
     private String courseCode;
 
-    @ManyToMany(mappedBy = "registeredCourses")
+    private String description;
+
+    private String image;
+
+    @ManyToMany(mappedBy = "registeredCourses",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Student> students;
 
-    @ManyToMany(mappedBy = "assignedCourses")
+    @ManyToMany(mappedBy = "assignedCourses", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnore
+    //@JsonManagedReference
     private List<Teacher> teachers;
 
     @OneToMany(mappedBy = "course")

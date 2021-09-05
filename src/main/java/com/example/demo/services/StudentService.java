@@ -4,7 +4,6 @@ import com.example.demo.entities.Student;
 import com.example.demo.requests.LoginRequest;
 import org.springframework.http.ResponseEntity;
 
-
 import java.util.Optional;
 
 public interface StudentService {
@@ -12,5 +11,4 @@ public interface StudentService {
     Optional<Student> getStudent(String email);
     Optional<Student> getStudentById(Long id);
     ResponseEntity<?> authenticateStudent(LoginRequest loginRequest);
-
 }

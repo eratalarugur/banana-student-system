@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -48,6 +49,7 @@ public class Teacher implements UserDetails {
     private String password;
 
     @ManyToMany
+    //@JsonBackReference
     @JoinTable(
             name = "course_assigned",
             joinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id"),
@@ -62,7 +64,7 @@ public class Teacher implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return email;
     }
 
     @Override

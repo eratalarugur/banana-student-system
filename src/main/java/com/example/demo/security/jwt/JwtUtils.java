@@ -16,8 +16,8 @@ public class JwtUtils {
     private String jwtSecret = "SecretKey";
     private int jwtExpirationsMs = 86400000;
 
-    public String generateJwtToken(Authentication authentication, boolean isTeacher){
-        if (isTeacher){
+    public String generateJwtToken(Authentication authentication, int isTeacher){
+        if (isTeacher == 1){
             Teacher userPrincipal = (Teacher) authentication.getPrincipal();
             logger.info(jwtSecret);
             logger.info(String.valueOf(jwtExpirationsMs));

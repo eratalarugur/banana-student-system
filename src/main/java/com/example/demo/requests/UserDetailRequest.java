@@ -11,12 +11,12 @@ public class UserDetailRequest {
     @NonNull
     private String email;
 
-    private boolean isTeacher;
+    private int isTeacher;
 
     public UserDetailRequest() {
     }
 
-    public UserDetailRequest(@NonNull String email, boolean isTeacher) {
+    public UserDetailRequest(@NonNull String email, int isTeacher) {
         this.email = email;
         this.isTeacher = isTeacher;
     }

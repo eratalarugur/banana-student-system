@@ -1,4 +1,6 @@
 package com.example.demo.entities;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -52,7 +54,6 @@ public class Student implements UserDetails {
             joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
     private List<Course> registeredCourses;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

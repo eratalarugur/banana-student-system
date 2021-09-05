@@ -40,16 +40,25 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)){
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
+                System.out.println("**==>> username in jwt: " + username);
+                System.out.println("**==>> username in studentService: " + studentService.getStudent(username));
+                System.out.println("**==>> username in teacherService: " + teacherService.getTeacher(username));
 
-                if (studentService.getStudent(username) != null){
+                if (teacherService.getTeacher(username).isPresent()){
+                    System.out.println("HELLOOOOOOOO");
+                }
+                if (studentService.getStudent(username).isPresent()){
                     Optional<Student> userDetails = studentService.getStudent(username);
+                    System.out.println("userDetails v1==" + userDetails);
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             userDetails,null,userDetails.get().getAuthorities());
+                    System.out.println("userDetails v2==" + userDetails);
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } else{
                     Optional<Teacher> userDetails = teacherService.getTeacher(username);
+                    System.out.println("userDetails v3==" + userDetails);
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             userDetails,null,userDetails.get().getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
