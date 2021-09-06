@@ -44,7 +44,7 @@ public class ChatController {
      */
     @GetMapping("/get/{courseId}")
     public List<ChatResponse> getAllChatByCourseId(@PathVariable("courseId")Long courseId){
-        List<ChatResponse> allChatResponses = getAllChats(courseId);
+        List<ChatResponse> allChatResponses = chatService.getAllChats(courseId);
         return allChatResponses;
     }
 
@@ -58,30 +58,7 @@ public class ChatController {
     @PostMapping("/post")
     public List<ChatResponse> postChat(@RequestBody ChatRequest chatRequest){
         chatService.saveChat(chatRequest);
-        List<ChatResponse> allChatResponses = getAllChats(chatRequest.getCourseId());
+        List<ChatResponse> allChatResponses = chatService.getAllChats(chatRequest.getCourseId());
         return allChatResponses;
     }
-
-    /**
-     * Get all chats list.
-     *
-     * @param courseId the course id
-     * @return the list
-     */
-    public List<ChatResponse> getAllChats(Long courseId){
-        List<Chat> allChat = chatService.getAllChat(courseId);
-        List<ChatResponse> allChatResponses = new ArrayList<>();
-        for (Chat chat: allChat) {
-            Optional<Student> student = studentService.getStudentById(chat.getStudentId());
-            ChatResponse chatResponse = new ChatResponse();
-            Date oldDate = chat.getPostDate();
-            String newFormattedDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(oldDate);
-            chatResponse.setDate(newFormattedDate);
-            chatResponse.setMessage(chat.getMessage());
-            chatResponse.setSenderName(student.get().getName());
-            allChatResponses.add(chatResponse);
-        }
-        return allChatResponses;
-    }
-
 }
