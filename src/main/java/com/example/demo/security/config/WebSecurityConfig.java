@@ -42,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/course/**").permitAll()
+                .antMatchers("/chat/**").permitAll()
                 //.antMatchers("/courses/**").hasAnyAuthority("Student","Teacher")
                 .anyRequest()
                 .authenticated();

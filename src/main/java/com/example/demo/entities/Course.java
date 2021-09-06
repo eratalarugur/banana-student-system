@@ -44,4 +44,7 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<Assignment> assignments;
 
+/*    @OneToMany(mappedBy = "course")
+    private List<Chat> chats;*/
+
 }

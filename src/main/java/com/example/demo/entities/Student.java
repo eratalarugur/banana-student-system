@@ -48,6 +48,9 @@ public class Student implements UserDetails {
     @NonNull
     private String password;
 
+ /*   @OneToMany(mappedBy = "student")
+    private List<Chat> chats;*/
+
     @ManyToMany
     @JoinTable(
             name = "course_registered",
