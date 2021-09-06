@@ -33,6 +33,7 @@ public class AuthenticationController {
     @Autowired
     TeacherService teacherService;
 
+
     /**
      * Authenticate response entity.
      *
@@ -51,13 +52,14 @@ public class AuthenticationController {
         }
     }
 
+
     /**
      * Gets user.
      *
      * @param userDetailRequest the user detail request
      * @return the user
      */
-    @GetMapping("/detail")
+    @PostMapping("/detail")
     public Object getUser(@RequestBody UserDetailRequest userDetailRequest) {
         if (userDetailRequest.getIsTeacher() == 1){
             System.out.println("====>>>> getUser detail Teacher Email : " + userDetailRequest.getEmail());
