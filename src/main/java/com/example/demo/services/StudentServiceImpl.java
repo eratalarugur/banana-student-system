@@ -19,18 +19,33 @@ import com.example.demo.security.jwt.JwtUtils;
 
 import java.util.Optional;
 
+/**
+ * The type Student service.
+ */
 @Service
 public class StudentServiceImpl implements StudentService, UserDetailsService {
 
+    /**
+     * The Student repository.
+     */
     @Autowired
     StudentRepository studentRepository;
 
+    /**
+     * The Authentication manager.
+     */
     @Autowired
     AuthenticationManager authenticationManager;
 
+    /**
+     * The Password encoder.
+     */
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    /**
+     * The Jwt utils.
+     */
     @Autowired
     JwtUtils jwtUtils;
 

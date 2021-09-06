@@ -8,12 +8,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * The type Course service.
+ */
 @Service
 public class CourseService {
 
+    /**
+     * The Course repository.
+     */
     @Autowired
     CourseRepository courseRepository;
 
+    /**
+     * Gets course by id.
+     *
+     * @param id the id
+     * @return the course by id
+     */
     public Optional<Course> getCourseById(Long id) {
         Optional<Course> course = courseRepository.findById(id);
         return course;

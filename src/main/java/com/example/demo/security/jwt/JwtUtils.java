@@ -10,12 +10,22 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * The type Jwt utils.
+ */
 @Component
 public class JwtUtils {
     private  static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
     private String jwtSecret = "SecretKey";
     private int jwtExpirationsMs = 86400000;
 
+    /**
+     * Generate jwt token string.
+     *
+     * @param authentication the authentication
+     * @param isTeacher      the is teacher
+     * @return the string
+     */
     public String generateJwtToken(Authentication authentication, int isTeacher){
         if (isTeacher == 1){
             Teacher userPrincipal = (Teacher) authentication.getPrincipal();
@@ -34,10 +44,22 @@ public class JwtUtils {
         }
     }
 
+    /**
+     * Get user name from jwt token string.
+     *
+     * @param token the token
+     * @return the string
+     */
     public String getUserNameFromJwtToken(String token){
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
+    /**
+     * Validate jwt token boolean.
+     *
+     * @param authToken the auth token
+     * @return the boolean
+     */
     public boolean validateJwtToken(String authToken){
         try{
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);

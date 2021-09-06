@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * The type Auth token filter.
+ */
 public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -40,13 +43,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)){
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
-/*                System.out.println("**==>> username in jwt: " + username);
-                System.out.println("**==>> username in studentService: " + studentService.getStudent(username));
-                System.out.println("**==>> username in teacherService: " + teacherService.getTeacher(username));
-
-                if (teacherService.getTeacher(username).isPresent()){
-                    System.out.println("HELLOOOOOOOO");
-                }*/
                 if (studentService.getStudent(username).isPresent()){
                     Optional<Student> userDetails = studentService.getStudent(username);
                     System.out.println("userDetails v1==" + userDetails);
@@ -65,12 +61,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-
-//                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-//                        userDetails,null,userDetails.get().getAuthorities());
-//                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//
-//                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e){
             System.out.println(request);

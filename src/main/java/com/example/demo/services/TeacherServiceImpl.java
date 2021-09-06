@@ -19,18 +19,33 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * The type Teacher service.
+ */
 @Service
 public class TeacherServiceImpl implements TeacherService, UserDetailsService {
 
+    /**
+     * The Teacher repository.
+     */
     @Autowired
     TeacherRepository teacherRepository;
 
+    /**
+     * The Authentication manager.
+     */
     @Autowired
     AuthenticationManager authenticationManager;
 
+    /**
+     * The Password encoder.
+     */
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    /**
+     * The Jwt utils.
+     */
     @Autowired
     JwtUtils jwtUtils;
 
