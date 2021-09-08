@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.example.demo.entities.Doc;
+import com.example.demo.responses.DocumentResponse;
 import com.example.demo.services.DocStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -21,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
  * The type Doc controller.
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
-@Controller
+@RestController
 @RequestMapping("/file")
 public class DocController {
 
@@ -53,7 +54,7 @@ public class DocController {
             docStorageService.saveFile(file);
 
         }
-        return "Uploaded";
+        return "redirect:/";
     }
 
     /**
@@ -69,6 +70,12 @@ public class DocController {
                 .contentType(MediaType.parseMediaType(doc.getDocType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment:filename=\""+doc.getDocName()+"\"")
                 .body(new ByteArrayResource(doc.getData()));
+    }
+
+
+    @GetMapping("/downloadFiles")
+    public List<DocumentResponse> downloadFiles(){
+        return docStorageService.getResponseFiles();
     }
 
 }
