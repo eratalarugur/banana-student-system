@@ -1,10 +1,12 @@
 package com.example.demo.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.entities.Doc;
 import com.example.demo.repositories.DocRepository;
+import com.example.demo.responses.DocumentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,5 +56,14 @@ public class DocStorageService {
      */
     public List<Doc> getFiles(){
         return docRepository.findAll();
+    }
+
+    public List<DocumentResponse> getResponseFiles(){
+        List<DocumentResponse> documentResponses = new ArrayList<>();
+        List<Doc> docs =  docRepository.findAll();
+        for (Doc doc : docs) {
+            documentResponses.add(new DocumentResponse(doc.getId(),doc.getDocName()));
+        }
+        return documentResponses;
     }
 }
