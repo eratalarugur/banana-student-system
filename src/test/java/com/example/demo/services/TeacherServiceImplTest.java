@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
@@ -17,6 +18,7 @@ import com.example.demo.responses.JwtResponse;
 import com.example.demo.security.jwt.JwtUtils;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,6 +52,44 @@ public class TeacherServiceImplTest {
 
     @Autowired
     private TeacherServiceImpl teacherServiceImpl;
+
+    @Test
+    public void testGetTeacher() {
+        Teacher teacher = new Teacher();
+        teacher.setEmail("jane.doe@example.org");
+        teacher.setPassword("iloveyou");
+        teacher.setAssignedCourses(new ArrayList<Course>());
+        teacher.setBirthday("Birthday");
+        teacher.setPicture("Picture");
+        teacher.setCity("Oxford");
+        teacher.setName("Name");
+        teacher.setSurname("Doe");
+        Optional<Teacher> ofResult = Optional.<Teacher>of(teacher);
+        when(this.teacherRepository.findUserByEmail((String) any())).thenReturn(ofResult);
+        Optional<Teacher> actualTeacher = this.teacherServiceImpl.getTeacher("jane.doe@example.org");
+        assertSame(ofResult, actualTeacher);
+        assertTrue(actualTeacher.isPresent());
+        verify(this.teacherRepository).findUserByEmail((String) any());
+    }
+
+    @Test
+    public void testGetTeacherById() {
+        Teacher teacher = new Teacher();
+        teacher.setEmail("jane.doe@example.org");
+        teacher.setPassword("iloveyou");
+        teacher.setAssignedCourses(new ArrayList<Course>());
+        teacher.setBirthday("Birthday");
+        teacher.setPicture("Picture");
+        teacher.setCity("Oxford");
+        teacher.setName("Name");
+        teacher.setSurname("Doe");
+        Optional<Teacher> ofResult = Optional.<Teacher>of(teacher);
+        when(this.teacherRepository.findById((Long) any())).thenReturn(ofResult);
+        Optional<Teacher> actualTeacherById = this.teacherServiceImpl.getTeacherById(123L);
+        assertSame(ofResult, actualTeacherById);
+        assertTrue(actualTeacherById.isPresent());
+        verify(this.teacherRepository).findById((Long) any());
+    }
 
     @Test
     public void testAuthenticateTeacher() throws AuthenticationException {
@@ -114,6 +154,31 @@ public class TeacherServiceImplTest {
         verify(this.authenticationManager).authenticate((Authentication) any());
         verify(teacher).getEmail();
         verify(teacher).getId();
+    }
+
+    @Test
+    public void testLoadUserByUsername() throws UsernameNotFoundException {
+        Teacher teacher = new Teacher();
+        teacher.setEmail("jane.doe@example.org");
+        teacher.setPassword("iloveyou");
+        teacher.setAssignedCourses(new ArrayList<Course>());
+        teacher.setBirthday("Birthday");
+        teacher.setPicture("Picture");
+        teacher.setCity("Oxford");
+        teacher.setName("Name");
+        teacher.setSurname("Doe");
+        Optional<Teacher> ofResult = Optional.<Teacher>of(teacher);
+        when(this.teacherRepository.findUserByEmail((String) any())).thenReturn(ofResult);
+        assertSame(teacher, this.teacherServiceImpl.loadUserByUsername("jane.doe@example.org"));
+        verify(this.teacherRepository).findUserByEmail((String) any());
+    }
+
+    @Test
+    public void testLoadUserByUsername2() throws UsernameNotFoundException {
+        when(this.teacherRepository.findUserByEmail((String) any())).thenReturn(Optional.<Teacher>empty());
+        assertThrows(UsernameNotFoundException.class,
+                () -> this.teacherServiceImpl.loadUserByUsername("jane.doe@example.org"));
+        verify(this.teacherRepository).findUserByEmail((String) any());
     }
 }
 

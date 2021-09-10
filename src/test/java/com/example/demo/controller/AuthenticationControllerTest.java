@@ -3,10 +3,18 @@ package com.example.demo.controller;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
+import com.example.demo.entities.Course;
+import com.example.demo.entities.Student;
+import com.example.demo.entities.Teacher;
 import com.example.demo.requests.LoginRequest;
+import com.example.demo.requests.UserDetailRequest;
 import com.example.demo.services.StudentService;
 import com.example.demo.services.TeacherService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,43 +43,83 @@ public class AuthenticationControllerTest {
     private TeacherService teacherService;
 
     @Test
-    public void testAuthenticate() throws Exception {
-        when(this.teacherService.authenticateTeacher((LoginRequest) any()))
-                .thenReturn(new ResponseEntity<Object>(HttpStatus.CONTINUE));
+    public void testGetUser() throws Exception {
+        Teacher teacher = new Teacher();
+        teacher.setEmail("jane.doe@example.org");
+        teacher.setPassword("iloveyou");
+        teacher.setAssignedCourses(new ArrayList<Course>());
+        teacher.setBirthday("Birthday");
+        teacher.setPicture("Picture");
+        teacher.setCity("Oxford");
+        teacher.setName("Name");
+        teacher.setSurname("Doe");
+        Optional<Teacher> ofResult = Optional.<Teacher>of(teacher);
+        when(this.teacherService.getTeacher((String) any())).thenReturn(ofResult);
 
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail("jane.doe@example.org");
-        loginRequest.setPassword("iloveyou");
-        loginRequest.setIsTeacher(1);
-        String content = (new ObjectMapper()).writeValueAsString(loginRequest);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user/login")
+        UserDetailRequest userDetailRequest = new UserDetailRequest();
+        userDetailRequest.setEmail("jane.doe@example.org");
+        userDetailRequest.setIsTeacher(1);
+        String content = (new ObjectMapper()).writeValueAsString(userDetailRequest);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user/detail")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.authenticationController)
+        MockMvcBuilders.standaloneSetup(this.authenticationController)
                 .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().is(100));
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"id\":0,\"name\":\"Name\",\"surname\":\"Doe\",\"birthday\":\"Birthday\",\"email\":\"jane.doe@example.org\",\"picture\""
+                                        + ":\"Picture\",\"city\":\"Oxford\",\"password\":\"iloveyou\",\"assignedCourses\":[],\"enabled\":true,\"username\":\"jane"
+                                        + ".doe@example.org\",\"authorities\":[{\"authority\":\"TEACHER\"}],\"credentialsNonExpired\":true,\"accountNonLocked"
+                                        + "\":true,\"accountNonExpired\":true}"));
     }
 
     @Test
-    public void testAuthenticate2() throws Exception {
-        when(this.teacherService.authenticateTeacher((LoginRequest) any()))
-                .thenReturn(new ResponseEntity<Object>(HttpStatus.CONTINUE));
-        when(this.studentService.authenticateStudent((LoginRequest) any()))
-                .thenReturn(new ResponseEntity<Object>(HttpStatus.CONTINUE));
+    public void testGetUser2() throws Exception {
+        Teacher teacher = new Teacher();
+        teacher.setEmail("jane.doe@example.org");
+        teacher.setPassword("iloveyou");
+        teacher.setAssignedCourses(new ArrayList<Course>());
+        teacher.setBirthday("Birthday");
+        teacher.setPicture("Picture");
+        teacher.setCity("Oxford");
+        teacher.setName("Name");
+        teacher.setSurname("Doe");
+        Optional<Teacher> ofResult = Optional.<Teacher>of(teacher);
+        when(this.teacherService.getTeacher((String) any())).thenReturn(ofResult);
 
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail("jane.doe@example.org");
-        loginRequest.setPassword("iloveyou");
-        loginRequest.setIsTeacher(0);
-        String content = (new ObjectMapper()).writeValueAsString(loginRequest);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user/login")
+        Student student = new Student();
+        student.setEmail("jane.doe@example.org");
+        student.setPassword("iloveyou");
+        student.setBirthday("Birthday");
+        student.setPicture("Picture");
+        student.setRegisteredCourses(new ArrayList<Course>());
+        student.setCity("Oxford");
+        student.setName("Name");
+        student.setSurname("Doe");
+        Optional<Student> ofResult1 = Optional.<Student>of(student);
+        when(this.studentService.getStudent((String) any())).thenReturn(ofResult1);
+
+        UserDetailRequest userDetailRequest = new UserDetailRequest();
+        userDetailRequest.setEmail("jane.doe@example.org");
+        userDetailRequest.setIsTeacher(0);
+        String content = (new ObjectMapper()).writeValueAsString(userDetailRequest);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user/detail")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.authenticationController)
+        MockMvcBuilders.standaloneSetup(this.authenticationController)
                 .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().is(100));
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"id\":0,\"name\":\"Name\",\"surname\":\"Doe\",\"birthday\":\"Birthday\",\"email\":\"jane.doe@example.org\",\"picture\""
+                                        + ":\"Picture\",\"city\":\"Oxford\",\"password\":\"iloveyou\",\"registeredCourses\":[],\"enabled\":true,\"username\":"
+                                        + "\"jane.doe@example.org\",\"authorities\":[{\"authority\":\"STUDENT\"}],\"credentialsNonExpired\":true,"
+                                        + "\"accountNonLocked\":true,\"accountNonExpired\":true}"));
     }
 }
 

@@ -57,5 +57,32 @@ public class StudentControllerTest {
                                         + "\"jane.doe@example.org\",\"authorities\":[{\"authority\":\"STUDENT\"}],\"credentialsNonExpired\":true,"
                                         + "\"accountNonLocked\":true,\"accountNonExpired\":true}"));
     }
+
+    @Test
+    public void testGetStudentById() throws Exception {
+        Student student = new Student();
+        student.setEmail("jane.doe@example.org");
+        student.setPassword("iloveyou");
+        student.setBirthday("Birthday");
+        student.setPicture("Picture");
+        student.setRegisteredCourses(new ArrayList<Course>());
+        student.setCity("Oxford");
+        student.setName("Name");
+        student.setSurname("Doe");
+        Optional<Student> ofResult = Optional.<Student>of(student);
+        when(this.studentService.getStudentById((Long) any())).thenReturn(ofResult);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/student/id/{id}", 123L);
+        MockMvcBuilders.standaloneSetup(this.studentController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"id\":0,\"name\":\"Name\",\"surname\":\"Doe\",\"birthday\":\"Birthday\",\"email\":\"jane.doe@example.org\",\"picture\""
+                                        + ":\"Picture\",\"city\":\"Oxford\",\"password\":\"iloveyou\",\"registeredCourses\":[],\"enabled\":true,\"username\":"
+                                        + "\"jane.doe@example.org\",\"authorities\":[{\"authority\":\"STUDENT\"}],\"credentialsNonExpired\":true,"
+                                        + "\"accountNonLocked\":true,\"accountNonExpired\":true}"));
+    }
 }
 
