@@ -63,8 +63,6 @@ public class ChatService {
         chat.setMessage(chatRequest.getMessage());
         chat.setPostDate(new Date());
         chat.setStudentId(chatRequest.getStudentId());
-
-        System.out.println("serviceLayer =======>>>>>>>>>>>> " + chatRequest.toString());
         chatRepository.save(chat);
     }
 

@@ -51,8 +51,6 @@ public class TeacherServiceImpl implements TeacherService, UserDetailsService {
 
     @Override
     public Optional<Teacher> getTeacher(String email) {
-        System.out.println("=====>>>> String email: " + email );
-        System.out.println("=====>>>> TeachRepo result: " + teacherRepository.findUserByEmail(email) );
         Optional<Teacher> teacher = teacherRepository.findUserByEmail(email);
 
         return teacher;
@@ -71,7 +69,6 @@ public class TeacherServiceImpl implements TeacherService, UserDetailsService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication, 1);
-        System.out.println("======>>>>> Token is here : " + jwt);
         Teacher userDetails = (Teacher) authentication.getPrincipal();
 
         return ResponseEntity.ok(
