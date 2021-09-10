@@ -68,7 +68,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication, 0);
-        System.out.println("======>>>>> Token is here : " + jwt);
         Student userDetails = (Student) authentication.getPrincipal();
 
         return ResponseEntity.ok(

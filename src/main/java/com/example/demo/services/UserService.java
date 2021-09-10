@@ -51,9 +51,6 @@ public class UserService {
      * @return the response entity
      */
     public ResponseEntity<?> authenticateUser(LoginRequest loginRequest){
-        System.out.println("====>>>> authenticateUser Email : " + loginRequest.getEmail());
-        System.out.println("====>>>> authenticateUser Password : " + loginRequest.getPassword());
-        System.out.println("====>>>> authenticateUser isTeacher : " + loginRequest.getIsTeacher());
         if (loginRequest.getIsTeacher() == 1){
             return teacherService.authenticateTeacher(loginRequest);
         }else {

@@ -58,6 +58,11 @@ public class DocStorageService {
         return docRepository.findAll();
     }
 
+    /**
+     * Get response files list.
+     *
+     * @return the list
+     */
     public List<DocumentResponse> getResponseFiles(){
         List<DocumentResponse> documentResponses = new ArrayList<>();
         List<Doc> docs =  docRepository.findAll();

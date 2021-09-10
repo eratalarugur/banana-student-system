@@ -38,7 +38,6 @@ public class Course {
 
     @ManyToMany(mappedBy = "assignedCourses", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnore
-    //@JsonManagedReference
     private List<Teacher> teachers;
 
     @OneToMany(mappedBy = "course")
